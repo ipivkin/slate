@@ -1,7 +1,10 @@
 //= require ../lib/_lunr
+//= require ../lib/_lunr.stemmer.support
+//= require ../lib/_lunr.ru
+//= require ../lib/_lunr.multi
 //= require ../lib/_jquery
 //= require ../lib/_jquery.highlight
-;(function () {
+$(function () {
   'use strict';
 
   var content, searchResults;
@@ -9,29 +12,30 @@
   var searchDelay = 0;
   var timeoutHandle = 0;
 
-  var index = new lunr.Index();
+  var links = $('h1, h2');
 
-  index.ref('id');
-  index.field('title', { boost: 10 });
-  index.field('body');
-  index.pipeline.add(lunr.trimmer, lunr.stopWordFilter);
+  var index = lunr(function () {
+    this.use(lunr.multiLanguage('ru', 'en'));
+    this.ref('id');
+    this.field('title', { boost: 10 });
+    this.field('body');
 
-  $(populate);
-  $(bind);
-
-  function populate() {
-    $('h1, h2').each(function() {
+    links.each(function(link) {
       var title = $(this);
       var body = title.nextUntil('h1, h2');
-      index.add({
-        id: title.prop('id'),
-        title: title.text(),
-        body: body.text()
-      });
-    });
 
-    determineSearchDelay();
-  }
+      let doc = {
+        "id": title.prop('id'),
+        "title": title.text(),
+        "body": body.text()
+      };
+      this.add(doc);
+    }, this);
+  });
+
+  $(determineSearchDelay);
+  $(bind);
+
   function determineSearchDelay() {
     if(index.tokenStore.length>5000) {
       searchDelay = 300;
@@ -94,5 +98,5 @@
   function unhighlight() {
     content.unhighlight(highlightOpts);
   }
-})();
+});
 
