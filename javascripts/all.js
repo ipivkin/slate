@@ -15144,9 +15144,9 @@ $(function () {
   $(bind);
 
   function determineSearchDelay() {
-    if(index.tokenStore.length>5000) {
+    //if(index.tokenStore.length>5000) {
       searchDelay = 300;
-    }
+    //}
   }
 
   function bind() {
