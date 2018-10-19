@@ -13,7 +13,7 @@
 
 ```shell
 curl -X GET 
-  "https://online.moysklad.ru/api/remap/1.1/entity/currency"
+  "https://online.moysklad.ru/api/remap/1.2/entity/currency"
   -H "Authorization: Basic <Access-Token>"
 ```
 
@@ -114,7 +114,7 @@ curl -X GET
 
 ### HTTP запрос
 
-`GET https://online.moysklad.ru/api/remap/1.1/entity/currency`
+`GET https://online.moysklad.ru/api/remap/1.2/entity/currency`
 
 ### Параметры запроса
 Параметр | Значение по умолчанию | Описание
@@ -304,7 +304,7 @@ curl -X POST \
 
 ### HTTP запрос
 
-`DELETE https://online.moysklad.ru/api/remap/1.1/entity/currency/<ID>`
+`DELETE https://online.moysklad.ru/api/remap/1.2/entity/currency/<ID>`
 
 ### Параметры запроса
 Параметр | Описание
@@ -313,7 +313,7 @@ ID | id Валюты
 
 ```shell
 curl -X DELETE
-  "https://online.moysklad.ru/api/remap/1.1/entity/currency/7944ef04-f831-11e5-7a69-971500188b19"
+  "https://online.moysklad.ru/api/remap/1.2/entity/currency/7944ef04-f831-11e5-7a69-971500188b19"
   -H "Authorization: Basic <Access-Token>"
 ```
 
@@ -325,7 +325,7 @@ curl -X DELETE
 
 ### HTTP запрос
 
-`GET https://online.moysklad.ru/api/remap/1.1/entity/currency/<ID>`
+`GET https://online.moysklad.ru/api/remap/1.2/entity/currency/<ID>`
 
 ### Параметры запроса
 Параметр | Описание
@@ -334,7 +334,7 @@ ID | id Валюты
 
 ```shell
 curl -X GET
-  "https://online.moysklad.ru/api/remap/1.1/entity/currency/6314188d-2c7f-11e6-8a84-bae500000055"
+  "https://online.moysklad.ru/api/remap/1.2/entity/currency/6314188d-2c7f-11e6-8a84-bae500000055"
   -H "Authorization: Basic <Access-Token>"
 ```
 
@@ -386,7 +386,7 @@ curl -X GET
 
 ```shell
 curl -X PUT
-  "https://online.moysklad.ru/api/remap/1.1/entity/currency/6314188d-2c7f-11e6-8a84-bae500000055"
+  "https://online.moysklad.ru/api/remap/1.2/entity/currency/6314188d-2c7f-11e6-8a84-bae500000055"
   -H "Authorization: Basic <Access-Token>"
   -d '{
   "name": "долл",

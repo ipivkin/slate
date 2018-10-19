@@ -7,6 +7,7 @@ HTTP-клиентах, таких как Postman, curl и т.п.
 
 ## Ограничения
 Для JSON API установлены следующие ограничения:
+
   + Не более 100 запросов за 5 секундный период
   + Не более 5 параллельных запросов от одного пользователя
   + Не более 20 параллельных запросов от аккаунта
@@ -22,6 +23,7 @@ HTTP-клиентах, таких как Postman, curl и т.п.
 В JSON есть несколько видов Метаданных. Один из них - поле **meta**, которое фигурирует в большинстве
 JSON представлений объектов, и содержит информацию об объекте или о выдаче, а также может использоваться в качестве ссылки
 на другой объект. Поле **meta** представляет собой объект со следующими атрибутами:
+
 + **href** - Ссылка на объект
 + **metadataHref** - Ссылка на метаданные сущности (Другой вид метаданных. Присутствует не во всех сущностях)
 + **type** - Тип объекта
@@ -34,6 +36,7 @@ JSON представлений объектов, и содержит инфор
 Следующие атрибуты объекта **meta** появляются, как правило, в методах выдачи списка сущностей/строк отчёта.
 В них содержится информация о выдаче, пришедшей в ответ. В объектах **meta**, содержащих
 данные лишь об одном объекте (например поле **meta** в объекте **context**) нижеперечисленные атрибуты не фигурируют.
+
 + **size** - Размер выданного списка
 + **limit** - Максимальное количество элементов в выданном списке. Максимальное количество элементов в списке равно 1000, для вложенных коллекций - 100.
 + **offset** - Отступ в выданном списке
@@ -80,6 +83,7 @@ curl -X GET
 ### Мета коллекций 
 **meta** коллекций содержит все те же атрибуты, что и **meta** сущностей, однако, если в списке появляется больше
 позиций, чем умещается на одной странице (size > limit) в объект **meta** добавляются след. поля:
+
 + **nextHref** - Ссылка на предыдущую страницу сущностей.
 + **previousHref** - Ссылка на следующую страницу сущностей.
 
@@ -128,15 +132,10 @@ curl -X GET
 + X-Lognex-Reset - время до сброса ограничения в миллисекундах. Равно нулю, если ограничение не установлено
 + X-Lognex-Retry-After - время до сброса ограничения в миллисекундах.
 
-## Все коды ошибок и их описания
-___
-<div class="scrlable">
-<!-- include(errors.apib) -->
-</div>
-___
 
 ## Работа с дополнительными полями
 Список сущностей, у которых есть доп. поля:
+
 + [Договор](/api/remap/1.2/doc/contract.html)
 + [Контрагент](/api/remap/1.2/doc/counterparty.html)
 + [Юрлицо](/api/remap/1.2/doc/organization.html)
@@ -179,6 +178,7 @@ ___
 
 Дополнительные поля сущности - внутренняя коллекция **attributes**.
 Представлена в виде массива объектов с полями:
+
 + **meta** - Ссылка на метаданные доп. поля.
 + **id** - Id соответствующего доп. поля.
 + **name** - Наименование доп. поля
@@ -187,6 +187,7 @@ ___
 Посмотреть все созданные в основном интерфейсе доп. поля можно с помощью запроса на получение метаданных Сущности.
 Ответ - объект, содержащий метаданные об объектах данного типа, и в случае объектов, для которых определены доп. поля -
 информацию о доп. полях в виде коллекции attributes, объекты которой содержат следующие поля:
+
 + **meta** - Ссылка на метаданные доп. поля
 + **id** - Id доп. поля
 + **name** - Наименование доп. поля
@@ -218,6 +219,7 @@ ___
 Если в качестве типа доп. поля выбран пользовательский справочник, то в составе объекта данного
 доп. поля появится новый атрибут **customEntityMeta** являющийся ссылкой на метаданные этого справочника.
 Полный набор атрибутов доп. поля будет выглядеть следующим образом:
+
 + **meta** - Ссылка на метаданные доп. поля
 + **customEntityMeta** - Ссылка на метаданные пользовательского справочника
 + **id** - ID доп. поля
@@ -250,6 +252,7 @@ ___
 Если для доп. поля указан **id**, которого нет в метаданных сущности, то возникнет ошибка.
 
 При обновлении значений доп.полей если в теле запроса на обновление сущности в массиве доп. полей:
+
 + Не указаны **id** каких-либо доп.полей, которым в данной сущности уже присвоено значение - соответствующие доп. поля обновлены не будут.
 + Указаны **id**, доп. полей, которым в данной сущности уже присвоено значение - соответствующим доп. полям будет присвоено переданное значение.
 + Указаны **id**, доп. полей, которым в данной сущности ещё не присвоено значение - соответствующим доп. полям эти новые значения будут присвоены.
@@ -259,6 +262,7 @@ ___
 ### Доп. поля типа файл
 
 Для загрузки значения для доп. поля типа файл нужно в JSON при создании или обновлении для значения поля указать объект следующей структуры:
+
 + **filename** - Имя файла `Необходимое`
 + **content** - Байты файла, закодированные в base64 `Необходимое`
 
@@ -275,27 +279,10 @@ API сервиса МойСклад позволяет оперировать с
 но не были переданы в теле запроса на обновление, будут удалены, все существующие позиции, id которых совпал с id передаваемых позиций в теле запроса, будут обновлены,
 а новые позиции, которых ранее не было среди существующих позиций документа, будут добавлены в список позиций.
 ###  Работа с позициями документов с помощью специальных ресурсов 
-В JSON API предусмотрены специальные ресурсы для управления позициями документов. Эти ресурсы как правило доступны по следующему URI и с помощью них вы сможете удалять позиции из документа, сделав запрос с методом DELETE по URL соответствующего ресурса с указание id позиции:
-+ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions`
 
-Пример URL для запроса на удаление с помощью DELETE:
-+ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions/179dd832-960c-11e6-8a84-bae5000000dc`
+> Пример тела запроса:
 
-При работе со специальными ресурсами можно запрашивать список всех позиций документа, создавать новые позиции, а также обновлять существующие.
-При создании новых позиций с помощью данных ресурсов, можно обходить ограничение в 100 позиций на документ.
-Также, используя данный ресурс, можно управлять массовым обновлением позиций. Для изменения сведений по отдельным позициям
-необходимо использовать ресурсы управления отдельными позициями документа, которые доступны по URI:
-+ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions/{id отдельной позиции}`
-
-Оба способа работы с позициями также описаны в документации по каждому из документов.
-
-Также возможно массовое удаление позиций документа, используя метод POST по URL соответствующего ресурса. В теле запроса необходимо указать массив удаляемых позиций, указав поле **meta** у каждой из позиций.
-
-Пример URL для запроса на массовое удаление позиций с помощью POST:
-+ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions/delete`
-
-Пример тела запроса:
-```
+```json
 [
   {
     "meta": {
@@ -321,9 +308,40 @@ API сервиса МойСклад позволяет оперировать с
 ]
 ```
 
+В JSON API предусмотрены специальные ресурсы для управления позициями документов. Эти ресурсы как правило доступны по следующему URI и с помощью них вы сможете удалять позиции из документа, сделав запрос с методом DELETE по URL соответствующего ресурса с указание id позиции:
++ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions`
+
+Пример URL для запроса на удаление с помощью DELETE:
++ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions/179dd832-960c-11e6-8a84-bae5000000dc`
+
+При работе со специальными ресурсами можно запрашивать список всех позиций документа, создавать новые позиции, а также обновлять существующие.
+При создании новых позиций с помощью данных ресурсов, можно обходить ограничение в 100 позиций на документ.
+Также, используя данный ресурс, можно управлять массовым обновлением позиций. Для изменения сведений по отдельным позициям
+необходимо использовать ресурсы управления отдельными позициями документа, которые доступны по URI:
++ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions/{id отдельной позиции}`
+
+Оба способа работы с позициями также описаны в документации по каждому из документов.
+
+Также возможно массовое удаление позиций документа, используя метод POST по URL соответствующего ресурса. В теле запроса необходимо указать массив удаляемых позиций, указав поле **meta** у каждой из позиций.
+
+Пример URL для запроса на массовое удаление позиций с помощью POST:
++ `/{код сущности документа, в составе JSON API}/{id отдельного документа}/positions/delete`
 
 
 ## Остатки в позициях документов
+
+> Представление остатков в составе позиции
+
+```json
+"stock": {
+    "cost": 5000,
+    "quantity": 999,
+    "reserve": 90,
+    "intransit": 9,
+    "available": 918
+}
+```
+
 При запросе и обновлении документов есть возможность получать остатки позиций этих документов.
 Для получения остатков в позициях документа в запросе нужно передать дополнительный параметр `fields=stock`.
 Например,
@@ -335,6 +353,7 @@ API сервиса МойСклад позволяет оперировать с
 Для **Заказа покупателя**, **Счета покупателя**, **Заказа поставщика**, **Счета поставщика** остатки рассчитываются на текущий момент времени.
 
 Получить остатки можно для следующих запросов:
+
 + Получения списка операций
 + Получение отдельной операции
 + Получение позиций операции
@@ -342,16 +361,6 @@ API сервиса МойСклад позволяет оперировать с
 + Обновление операции
 + Обновление позиции
 
-Остатки возвращаются в составе позиции в виде:
-```
-"stock": {
-    "cost": 5000,
-    "quantity": 999,
-    "reserve": 90,
-    "intransit": 9,
-    "available": 918
-}
-```
 Для возврата покупателя без основания и розничного возврата без основания поле `cost` будет отсутствовать в составе `stock`.
 
 
@@ -392,6 +401,7 @@ API сервиса МойСклад позволяет оперировать с
 В запросах на создание/обновление сущностей, а также в параметрах фильтрации нужно указывать `moment` именно в этом формате.
 
 Следующие поля устанавливаются и выводятся в JSON API с точностью до минут, а именно со значением секунд и миллисекунд равным `00`:
+
 + **incomingDate**
 + **commisionPeriodStart**
 + **commisionPeriodEnd**
@@ -572,6 +582,608 @@ API сервиса МойСклад позволяет оперировать с
 В JSON API для скачивания файла формируется редирект на временный URL файла. Для корректной работы необходимо поддерживать обработку редиректов.
 
 ## Замена ссылок объектами с помощью expand [/entity/salesreturn]
+> Пример запроса возврата без expand 
+
+```shell
+curl -X GET
+  "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089"
+  -H "Authorization: Basic <Access-Token>"
+```
+
+> Объект возврата покупателя в его обычном представлении, имеющий ссылку на отгрузку
+
+```json
+{
+  "meta": {
+    "href": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089",
+    "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/metadata",
+    "type": "salesreturn",
+    "mediaType": "application/json"
+  },
+  ...
+  "demand": {
+    "meta": {
+      "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/f99544d7-4a98-11e6-8a84-bae50000007f",
+      "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/demand/metadata",
+      "type": "demand",
+      "mediaType": "application/json"
+    }
+  }
+}
+```
+
+> Пример запроса возврата с expand отгрузки
+Передаём параметр **expand**=demand.
+
+```shell
+curl -X GET
+  "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089?expand=demand"
+  -H "Authorization: Basic <Access-Token>"
+```
+
+> В ответ придёт возврат покупателя, у которого вместо ссылки на отгрузку, по которой производится возврат, будет вложенный объект со всеми полями данной отгрузки.
+
+```json
+{
+  "meta": {
+    "href": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089?expand=demand",
+    "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/metadata",
+    "type": "salesreturn",
+    "mediaType": "application/json"
+  },
+  ...
+  "demand": {
+    "meta": {
+      "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/f99544d7-4a98-11e6-8a84-bae50000007f",
+      "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/demand/metadata",
+      "type": "demand",
+      "mediaType": "application/json"
+    },
+    "id": "f99544d7-4a98-11e6-8a84-bae50000007f",
+    "accountId": "f976ed28-2e58-11e6-8a84-bae500000001",
+    "owner": {
+      "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/employee/faba7f37-2e58-11e6-8a84-bae500000028",
+        "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+        "type": "employee",
+        "mediaType": "application/json"
+      }
+    },
+    "shared": false,
+    "group": {
+      "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/group/f97aa1fb-2e58-11e6-8a84-bae500000002",
+        "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/group/metadata",
+        "type": "group",
+        "mediaType": "application/json"
+      }
+    },
+    ...
+    "positions": {
+      "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/f99544d7-4a98-11e6-8a84-bae50000007f/positions",
+        "type": "demandposition",
+        "mediaType": "application/json",
+        "size": 2,
+        "limit": 1000,
+        "offset": 0
+      }
+    },
+    "vatEnabled": true,
+    "vatIncluded": true,
+    "payedSum": 0,
+    "returns": [
+      {
+        "meta": {
+          "href": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089",
+          "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/metadata",
+          "type": "salesreturn",
+          "mediaType": "application/json"
+        }
+      }
+    ]
+  }
+}
+```
+
+> Пример запроса возврата c expand с глубиной 2 [GET ]
+Теперь развернем поле **agent** у вложенной в возврат отгрузки (**demand**).
+В ответ придёт возврат покупателя с развёрнутой отгрузкой (**demand**), внутри которой
+будет развёрнутый объект контрагента (**agent**). <br>В данном запросе продемонстрирован уровень вложенности
+параметра **expand** равный двум.
+
+```shell
+curl -X GET
+  "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089?expand=demand,demand.agent"
+  -H "Authorization: Basic <Access-Token>"
+```
+
+```json
+{
+  "meta": {
+    "href": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089?expand=demand,demand.agent",
+    "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/metadata",
+    "type": "salesreturn",
+    "mediaType": "application/json"
+  },
+  ...
+  "demand": {
+    "meta": {
+      "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/f99544d7-4a98-11e6-8a84-bae50000007f?expand=agent",
+      "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/demand/metadata",
+      "type": "demand",
+      "mediaType": "application/json"
+    },
+    ...
+    "agent": {
+      "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/147c1f1b-32ca-11e6-8a84-bae500000004",
+        "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata",
+        "type": "counterparty",
+        "mediaType": "application/json"
+      },
+      ...
+      "name": "Агент1",
+      "code": "УТ0003074",
+      "externalCode": "kAgs4Xbhiz2Sp5oP2OCaB2",
+      "archived": false,
+      "legalTitle": "Общество с ограниченной ответственностью «Агент1»",
+      "legalAddress": "107023, г. Москва, Барабанный переулок, дом № 42, строение 2",
+      "inn": "7719864242",
+      "kpp": "771901001",
+      ...
+    },
+    ...
+    "positions": {
+      "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/f99544d7-4a98-11e6-8a84-bae50000007f/positions",
+        "type": "demandposition",
+        "mediaType": "application/json",
+        "size": 2,
+        "limit": 1000,
+        "offset": 0
+      }
+    },
+    "vatEnabled": true,
+    "vatIncluded": true,
+    "payedSum": 0,
+    "returns": [
+      {
+        "meta": {
+          "href": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089",
+          "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/salesreturn/metadata",
+          "type": "salesreturn",
+          "mediaType": "application/json"
+        }
+      }
+    ]
+  }
+  ...
+}
+```
+
+> Создание отгрузки с expand [POST /entity/demand?expand=agent]
+Развернем поле **agent** у создаваемой отгрузки.
+
+```shell
+curl -X POST
+  "https://online.moysklad.ru/api/remap/1.2/entity/demand?expand=agent"
+  -H "Authorization: Basic <Access-Token>"
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "0001",
+  "organization": {
+    "meta": {
+      "href": "https://online.moysklad.ru/api/remap/1.2/entity/organization/850c8195-f504-11e5-8a84-bae50000015e",
+      "type": "organization",
+      "mediaType": "application/json"
+    }
+  },
+  "agent": {
+    "meta": {
+      "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/9794d400-f689-11e5-8a84-bae500000078",
+      "type": "counterparty",
+      "mediaType": "application/json"
+    }
+  },
+  "store": {
+    "meta": {
+      "href": "https://online.moysklad.ru/api/remap/1.2/entity/store/850ee995-f504-11e5-8a84-bae500000160",
+      "type": "store",
+      "mediaType": "application/json"
+    }
+  }
+}'
+```
+
+> В ответ придёт созданная отгрузка с развёрнутым объектом контрагента (**agent**).
+
+```json
+{
+    "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000",
+        "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/demand/metadata",
+        "type": "demand",
+        "mediaType": "application/json",
+        "uuidHref": "https://online.moysklad.ru/app/#demand/edit?id=1c3f30d2-88b9-11e7-9464-e4de00000000"
+    },
+    "id": "1c3f30d2-88b9-11e7-9464-e4de00000000",
+    "accountId": "d8a2e973-6703-11e7-9464-e4de00000001",
+    "owner": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/employee/d9335bf2-6703-11e7-9464-e4de0000002a",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+            "type": "employee",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#employee/edit?id=d9335bf2-6703-11e7-9464-e4de0000002a"
+        }
+    },
+    "shared": false,
+    "group": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/group/d8a5d385-6703-11e7-9464-e4de00000002",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/group/metadata",
+            "type": "group",
+            "mediaType": "application/json"
+        }
+    },
+    "updated": "2017-08-24 13:43:47",
+    "name": "0001",
+    "externalCode": "UoaXR1oZhS9LOHzdUi42R1",
+    "moment": "2017-08-24 13:43:00",
+    "applicable": true,
+    "rate": {
+        "currency": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/currency/d959dce8-6703-11e7-9464-e4de00000058",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                "type": "currency",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=d959dce8-6703-11e7-9464-e4de00000058"
+            }
+        }
+    },
+    "sum": 0,
+    "store": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/store/d95915ff-6703-11e7-9464-e4de00000053",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/store/metadata",
+            "type": "store",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#warehouse/edit?id=d95915ff-6703-11e7-9464-e4de00000053"
+        }
+    },
+    "agent": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata",
+            "type": "counterparty",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#company/edit?id=d9593e70-6703-11e7-9464-e4de00000054"
+        },
+        "id": "d9593e70-6703-11e7-9464-e4de00000054",
+        "accountId": "d8a2e973-6703-11e7-9464-e4de00000001",
+        "owner": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/employee/d9335bf2-6703-11e7-9464-e4de0000002a",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+                "type": "employee",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#employee/edit?id=d9335bf2-6703-11e7-9464-e4de0000002a"
+            }
+        },
+        "shared": false,
+        "group": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/group/d8a5d385-6703-11e7-9464-e4de00000002",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/group/metadata",
+                "type": "group",
+                "mediaType": "application/json"
+            }
+        },
+        "updated": "2017-08-18 17:49:23",
+        "name": "ООО \"Поставщик\"",
+        "externalCode": "YWKWXePEi9jBAmxriBpc93",
+        "archived": false,
+        "created": "2017-07-12 16:13:08",
+        "companyType": "legal",
+        "legalTitle": "Общество с ограниченной ответственностью \"Поставщик\"",
+        "legalAddress": "г.Москва, ул.Строителей, д.12",
+        "inn": "7736570901",
+        "kpp": "773601001",
+        "accounts": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054/accounts",
+                "type": "account",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "tags": [
+            "bbbvcc",
+            "ss"
+        ],
+        "contactpersons": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054/contactpersons",
+                "type": "contactperson",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "notes": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054/notes",
+                "type": "note",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "state": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata/states/d9efdc3b-6703-11e7-9464-e4de00000066",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata",
+                "type": "state",
+                "mediaType": "application/json"
+            }
+        },
+        "salesAmount": 4500
+    },
+    "organization": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/organization/d955aa70-6703-11e7-9464-e4de00000051",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/organization/metadata",
+            "type": "organization",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#mycompany/edit?id=d955aa70-6703-11e7-9464-e4de00000051"
+        }
+    },
+    "created": "2017-08-24 13:43:48",
+    "positions": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000/positions",
+            "type": "demandposition",
+            "mediaType": "application/json",
+            "size": 0,
+            "limit": 1000,
+            "offset": 0
+        }
+    },
+    "vatEnabled": true,
+    "vatIncluded": true,
+    "vatSum": 0,
+    "payedSum": 0
+}
+```
+
+> Редактирование отгрузки с expand [PUT /entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000?expand=agent,organization]
+Теперь обновим эту отгрузку и развернем у неё поля **agent** и **organization**.
+В ответ придёт изменённая отгрузка с развёрнутым объектом контрагента (**agent**) и развёрнутым объектом юрлица (**organization**).
+
+```shell
+curl -X PUT
+  "https://online.moysklad.ru/api/remap/1.2/entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000?expand=agent,organization"
+  -H "Authorization: Basic <Access-Token>"
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "3738"
+}`
+```
+
+> Response 200 (application/json)
+
+```json
+{
+    "meta": {
+        "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000?expand=agent,organization",
+        "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/demand/metadata",
+        "type": "demand",
+        "mediaType": "application/json",
+        "uuidHref": "https://online.moysklad.ru/app/#demand/edit?id=1c3f30d2-88b9-11e7-9464-e4de00000000"
+    },
+    "id": "1c3f30d2-88b9-11e7-9464-e4de00000000",
+    "accountId": "d8a2e973-6703-11e7-9464-e4de00000001",
+    "owner": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/employee/d9335bf2-6703-11e7-9464-e4de0000002a",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+            "type": "employee",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#employee/edit?id=d9335bf2-6703-11e7-9464-e4de0000002a"
+        }
+    },
+    "shared": false,
+    "group": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/group/d8a5d385-6703-11e7-9464-e4de00000002",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/group/metadata",
+            "type": "group",
+            "mediaType": "application/json"
+        }
+    },
+    "updated": "2017-08-24 13:53:07",
+    "name": "3738",
+    "externalCode": "UoaXR1oZhS9LOHzdUi42R1",
+    "moment": "2017-08-24 13:43:00",
+    "applicable": true,
+    "rate": {
+        "currency": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/currency/d959dce8-6703-11e7-9464-e4de00000058",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/currency/metadata",
+                "type": "currency",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#currency/edit?id=d959dce8-6703-11e7-9464-e4de00000058"
+            }
+        }
+    },
+    "sum": 0,
+    "store": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/store/d95915ff-6703-11e7-9464-e4de00000053",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/store/metadata",
+            "type": "store",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#warehouse/edit?id=d95915ff-6703-11e7-9464-e4de00000053"
+        }
+    },
+    "agent": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata",
+            "type": "counterparty",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#company/edit?id=d9593e70-6703-11e7-9464-e4de00000054"
+        },
+        "id": "d9593e70-6703-11e7-9464-e4de00000054",
+        "accountId": "d8a2e973-6703-11e7-9464-e4de00000001",
+        "owner": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/employee/d9335bf2-6703-11e7-9464-e4de0000002a",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+                "type": "employee",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#employee/edit?id=d9335bf2-6703-11e7-9464-e4de0000002a"
+            }
+        },
+        "shared": false,
+        "group": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/group/d8a5d385-6703-11e7-9464-e4de00000002",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/group/metadata",
+                "type": "group",
+                "mediaType": "application/json"
+            }
+        },
+        "updated": "2017-08-18 17:49:23",
+        "name": "ООО \"Поставщик\"",
+        "externalCode": "YWKWXePEi9jBAmxriBpc93",
+        "archived": false,
+        "created": "2017-07-12 16:13:08",
+        "companyType": "legal",
+        "legalTitle": "Общество с ограниченной ответственностью \"Поставщик\"",
+        "legalAddress": "г.Москва, ул.Строителей, д.12",
+        "inn": "7736570901",
+        "kpp": "773601001",
+        "accounts": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054/accounts",
+                "type": "account",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "tags": [
+            "bbbvcc",
+            "ss"
+        ],
+        "contactpersons": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054/contactpersons",
+                "type": "contactperson",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "notes": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/d9593e70-6703-11e7-9464-e4de00000054/notes",
+                "type": "note",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "state": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata/states/d9efdc3b-6703-11e7-9464-e4de00000066",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/counterparty/metadata",
+                "type": "state",
+                "mediaType": "application/json"
+            }
+        },
+        "salesAmount": 4500
+    },
+    "organization": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/organization/d955aa70-6703-11e7-9464-e4de00000051",
+            "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/organization/metadata",
+            "type": "organization",
+            "mediaType": "application/json",
+            "uuidHref": "https://online.moysklad.ru/app/#mycompany/edit?id=d955aa70-6703-11e7-9464-e4de00000051"
+        },
+        "id": "d955aa70-6703-11e7-9464-e4de00000051",
+        "accountId": "d8a2e973-6703-11e7-9464-e4de00000001",
+        "owner": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/employee/d9335bf2-6703-11e7-9464-e4de0000002a",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/employee/metadata",
+                "type": "employee",
+                "mediaType": "application/json",
+                "uuidHref": "https://online.moysklad.ru/app/#employee/edit?id=d9335bf2-6703-11e7-9464-e4de0000002a"
+            }
+        },
+        "shared": true,
+        "group": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/group/d8a5d385-6703-11e7-9464-e4de00000002",
+                "metadataHref": "https://online.moysklad.ru/api/remap/1.2/entity/group/metadata",
+                "type": "group",
+                "mediaType": "application/json"
+            }
+        },
+        "updated": "2017-07-12 16:13:09",
+        "name": "reqwy",
+        "externalCode": "PRLKDfmQgwj7TGtiYWrrZ3",
+        "archived": false,
+        "created": "2017-07-12 16:13:08",
+        "companyType": "legal",
+        "legalTitle": "reqwy",
+        "email": "erqw@ss.ru",
+        "accounts": {
+            "meta": {
+                "href": "https://online.moysklad.ru/api/remap/1.2/entity/organization/d955aa70-6703-11e7-9464-e4de00000051/accounts",
+                "type": "account",
+                "mediaType": "application/json",
+                "size": 0,
+                "limit": 1000,
+                "offset": 0
+            }
+        },
+        "isEgaisEnable": false,
+        "payerVat": true,
+        "director": "Администратор",
+        "chiefAccountant": "Администратор"
+    },
+    "created": "2017-08-24 13:43:48",
+    "positions": {
+        "meta": {
+            "href": "https://online.moysklad.ru/api/remap/1.2/entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000/positions",
+            "type": "demandposition",
+            "mediaType": "application/json",
+            "size": 0,
+            "limit": 1000,
+            "offset": 0
+        }
+    },
+    "vatEnabled": true,
+    "vatIncluded": true,
+    "vatSum": 0,
+    "payedSum": 0
+}
+```
+
 В JSON API, в составе сущностей можно встретить ссылки на связанные объекты.
 Ссылки выводятся в формате [Метаданных](/api/remap/1.2/doc/index.html#header-метаданные). Для того, чтобы вместо ссылок получить связанные объекты,
 не обязательно делать отдельные запросы для каждого из них. Вместо этого, вместе с запросом на получение сущности, нужно передать параметр **expand**.
@@ -585,53 +1197,5 @@ Expand разрешен только на размере выборки не б�
 
 Также **expand** можно применять для результатов операций создания и обновления.
 
-+ Ниже показаны примеры использования **expand** на [Возврате покупателя](/api/remap/1.2/doc/sales_return.html). В примерах представлены только поля **meta** и **demand**.
+В примерах представлены только поля **meta** и **demand**.
 
-
-### Возврат без expand [GET /entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089]
-Объект возврата покупателя в его обычном представлении, имеющий ссылку на отгрузку
-+ Response 200 (application/json)
-  + Body
-        <!-- include(body/expand.json) -->
-
-### Возврат с expand отгрузки [GET /entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089?expand=demand]
-Передаём параметр **expand**=demand.
-В ответ придёт возврат покупателя, у которого вместо ссылки на отгрузку, по которой производится возврат, будет вложенный объект со всеми полями данной отгрузки.
-+ Response 200 (application/json)
-  + Body
-        <!-- include(body/expand1.json) -->
-
-### Expand с глубиной 2 [GET /entity/salesreturn/166909e6-4a99-11e6-8a84-bae500000089?expand=demand,demand.agent]
-Теперь развернем поле **agent** у вложенной в возврат отгрузки (**demand**).
-В ответ придёт возврат покупателя с развёрнутой отгрузкой (**demand**), внутри которой
-будет развёрнутый объект контрагента (**agent**). <br>В данном запросе продемонстрирован уровень вложенности
-параметра **expand** равный двум.
-+ Response 200 (application/json)
-  + Body
-        <!-- include(body/expand2.json) -->
-
-
-### Создание отгрузки с expand [POST /entity/demand?expand=agent]
-Развернем поле **agent** у создаваемой отгрузки.
-В ответ придёт созданная отгрузка с развёрнутым объектом контрагента (**agent**).
-
-+ Request Пример (application/json)
-Пример создания отгрузки с параметром запроса expand.
-  + Body
-        <!-- include(body/expand_post_request.json) -->
-
-+ Response 200 (application/json)
-  + Body
-        <!-- include(body/expand_post_response.json) -->
-
-### Редактирование отгрузки с expand [PUT /entity/demand/1c3f30d2-88b9-11e7-9464-e4de00000000?expand=agent,organization]
-Теперь обновим эту отгрузку и развернем у неё поля **agent** и **organization**.
-В ответ придёт изменённая отгрузка с развёрнутым объектом контрагента (**agent**) и развёрнутым объектом юрлица (**organization**).
-
-+ Request Пример (application/json)
-Пример редактирования отгрузки с параметром запроса expand.
-  + Body
-        <!-- include(body/expand_put_request.json) -->
-+ Response 200 (application/json)
-  + Body
-        <!-- include(body/expand_put_response.json) -->

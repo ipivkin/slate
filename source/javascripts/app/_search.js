@@ -12,15 +12,8 @@ $(function () {
   var searchDelay = 0;
   var timeoutHandle = 0;
 
-  var links = $('h1, h2');
-
-  var index = lunr(function () {
-    this.use(lunr.multiLanguage('ru', 'en'));
-    this.ref('id');
-    this.field('title', { boost: 10 });
-    this.field('body');
-
-    links.each(function(link) {
+  var links = [];
+  $('h1, h2').each(function(link) {
       var title = $(this);
       var body = title.nextUntil('h1, h2');
 
@@ -29,7 +22,17 @@ $(function () {
         "title": title.text(),
         "body": body.text()
       };
-      this.add(doc);
+      links.push(doc);
+  });
+
+  var index = lunr(function () {
+    this.use(lunr.multiLanguage('ru', 'en'));
+    this.ref('id');
+    this.field('title', { boost: 10 });
+    this.field('body');
+
+    links.forEach(function(link) {
+      this.add(link);
     }, this);
   });
 
