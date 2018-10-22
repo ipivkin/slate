@@ -10470,6 +10470,7 @@ return jQuery;
       $toc.find(tocLinkSelector).each(function() {
         var targetId = $(this).attr('href');
         if (targetId[0] === "#") {
+          console.log(targetId);
           headerHeights[targetId] = $(targetId).offset().top;
         }
       });
@@ -15144,9 +15145,7 @@ $(function () {
   $(bind);
 
   function determineSearchDelay() {
-    //if(index.tokenStore.length>5000) {
       searchDelay = 300;
-    //}
   }
 
   function bind() {
